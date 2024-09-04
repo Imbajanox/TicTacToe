@@ -49,9 +49,31 @@ function gameController (player1, player2, board) {
             [0, 3, 6], [1, 4, 7], [2, 5, 8],
             [0, 4, 8], [2, 4, 6]
         ];
+
+        return winPatterns.some(pattern => 
+            pattern.every(index => 
+                board.getBoard()[index] === currentPlayer.marker
+            )
+        );
     }
 
     const getCurrentPlayer = () => currentPlayer;
 
     return { playRound, getCurrentPlayer };
 }
+
+
+//Test Game
+
+const player1 = createPlayer('Player 1', 'X');
+const player2 = createPlayer('Player 2', 'O');
+
+const board = gameboard();
+
+const game = gameController(player1, player2, board);
+
+console.log(game.playRound(0));
+console.log(game.playRound(1));
+console.log(game.playRound(4));
+console.log(game.playRound(2));
+console.log(game.playRound(8));
