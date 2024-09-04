@@ -1,0 +1,14 @@
+body{
+    font-size: 32pt;
+}
+#gameBoard {
+    width: 150px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.cell {
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    border-style: solid;
+}

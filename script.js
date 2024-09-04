@@ -63,6 +63,8 @@ function gameController (player1, player2, board) {
 }
 
 
+
+
 //Test Game
 
 const player1 = createPlayer('Player 1', 'X');
@@ -72,8 +74,20 @@ const board = gameboard();
 
 const game = gameController(player1, player2, board);
 
-console.log(game.playRound(0));
-console.log(game.playRound(1));
-console.log(game.playRound(4));
-console.log(game.playRound(2));
-console.log(game.playRound(8));
+
+
+//UI
+
+document.querySelectorAll('.cell').forEach(cell => {
+    cell.addEventListener('click', (e) => {
+        const index = e.target.getAttribute('data-index');
+        const result = game.playRound(index);
+        e.target.textContent = board.getBoard()[index];
+
+        if(result) {
+            alert(result);
+            board.resetBoard();
+            document.querySelectorAll('.cell').forEach(cell => cell.textContent = '');
+        }
+    })
+})
