@@ -43,6 +43,16 @@ function gameController (player1, player2, board) {
         }
     };
 
+    const playWithAI = (index) => {
+        let result = game.playRound(index);
+        if (result) return result;
+
+
+        let aiMove = aiPlayer.getMove(board);
+        result = game.playRound(aiMove);
+        return result;
+    };
+
     const checkWin = () => {
         const winPatterns = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -59,18 +69,27 @@ function gameController (player1, player2, board) {
 
     const getCurrentPlayer = () => currentPlayer;
 
-    return { playRound, getCurrentPlayer };
+    return { playRound, playWithAI, getCurrentPlayer };
 }
 
+//AI
 
+const AIPlayer = (marker) => {
+    const getMove = (board) => {
+        let availableMoves = board.getBoard().map((cell, index) => cell === '' ? index : null);
+        return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+    };
+
+    return {marker, getMove};
+};
 
 
 //Test Game
 
 const player1 = createPlayer('Player 1', 'X');
-const player2 = createPlayer('Player 2', 'O');
+const aiPlayer = AIPlayer('O');
 
-const game = gameController(player1, player2, board);
+const game = gameController(player1, aiPlayer, board);
 
 
 
@@ -79,7 +98,7 @@ const game = gameController(player1, player2, board);
 document.querySelectorAll('.cell').forEach(cell => {
     cell.addEventListener('click', (e) => {
         const index = e.target.getAttribute('data-index');
-        const result = game.playRound(index);
+        const result = game.playWithAI(index);
         e.target.textContent = board.getBoard()[index];
 
         if(result) {
