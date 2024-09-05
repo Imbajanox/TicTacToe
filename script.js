@@ -33,6 +33,7 @@ function gameController (player1, player2, board) {
     };
 
     const playRound = (index) => {
+        updateUI();
         if (board.setMarker(index, currentPlayer.marker)) {
             if(checkWin()) {
                 return `${currentPlayer.name} wins!`
@@ -70,8 +71,11 @@ function gameController (player1, player2, board) {
 
 const AIPlayer = (marker) => {
     const getMove = (board) => {
-        let availableMoves = board.getBoard().map((cell, index) => cell === '' ? index : null);
-        return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+        let availableMoves = board.getBoard().map((cell, index) => cell === '' ? index : null).filter(index => index !== null);
+        if(availableMoves.length > 0){
+            return availableMoves[Math.floor(Math.random() * availableMoves.length)];
+        }
+        return null;
     };
 
     return {marker, getMove};
