@@ -33,8 +33,12 @@ function gameController (player1, player2, board) {
     };
 
     const playRound = (index) => {
-        updateUI();
-        if (board.setMarker(index, currentPlayer.marker)) {
+        if (board.getBoard()[index] === '') {
+
+            board.setMarker(index, currentPlayer.marker);
+            updateUI();
+
+
             if(checkWin()) {
                 return `${currentPlayer.name} wins!`
             } else if (board.getBoard().every(cell => cell !== '')) {
@@ -93,8 +97,11 @@ const playWithAI = (index) => {
     let result = game.playRound(index);
     updateUI();
     if (result) {
+        for (let i = 0; i < board.getBoard().length; i++) {
+            console.log(board.getBoard()[i]);
+        }
         console.log(result);
-        alert(result);
+
         return result;
     }
 
@@ -105,7 +112,7 @@ const playWithAI = (index) => {
 
     if (result) {
         console.log(result);
-        alert(result);
+        //alert(result);
         
     }
 
@@ -128,9 +135,10 @@ document.querySelectorAll('.cell').forEach(cell => {
         e.target.textContent = board.getBoard()[index];
 
         if(result) {
-            alert(result);
+            //alert(result);
             board.resetBoard();
-            document.querySelectorAll('.cell').forEach(cell => cell.textContent = '');
+            setTimeout(() => {document.querySelectorAll('.cell').forEach(cell => cell.textContent = '');}, 5000);
+            
         } else {
             const aiMove = board.getBoard().findIndex(cell => cell === aiPlayer.marker);
             if(aiMove !== -1) {
