@@ -2,7 +2,7 @@ function createPlayer (name, marker) {
     return { name, marker };
 }
 
-function gameboard () {
+const board = (function gameboard () {
   
     const board = ['','','','','','','','',''];
 
@@ -23,7 +23,7 @@ function gameboard () {
     };
 
     return { setMarker, getBoard, resetBoard };
-} 
+})(); 
 
 function gameController (player1, player2, board) {
     let currentPlayer = player1;
@@ -69,8 +69,6 @@ function gameController (player1, player2, board) {
 
 const player1 = createPlayer('Player 1', 'X');
 const player2 = createPlayer('Player 2', 'O');
-
-const board = gameboard();
 
 const game = gameController(player1, player2, board);
 
