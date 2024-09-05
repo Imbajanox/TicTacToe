@@ -39,19 +39,13 @@ function gameController (player1, player2, board) {
             } else if (board.getBoard().every(cell => cell !== '')) {
                 return "It's a draw!";
             }
+            console.log("Played round with" + currentPlayer.name)
             switchPlayer();
+            
         }
     };
 
-    const playWithAI = (index) => {
-        let result = game.playRound(index);
-        if (result) return result;
-
-
-        let aiMove = aiPlayer.getMove(board);
-        result = game.playRound(aiMove);
-        return result;
-    };
+    
 
     const checkWin = () => {
         const winPatterns = [
@@ -69,7 +63,7 @@ function gameController (player1, player2, board) {
 
     const getCurrentPlayer = () => currentPlayer;
 
-    return { playRound, playWithAI, getCurrentPlayer };
+    return { playRound, getCurrentPlayer };
 }
 
 //AI
@@ -91,20 +85,53 @@ const aiPlayer = AIPlayer('O');
 
 const game = gameController(player1, aiPlayer, board);
 
+const playWithAI = (index) => {
+    let result = game.playRound(index);
+    updateUI();
+    if (result) {
+        console.log(result);
+        alert(result);
+        return result;
+    }
 
+
+    let aiMove = aiPlayer.getMove(board);
+    result = game.playRound(aiMove);
+    updateUI();
+
+    if (result) {
+        console.log(result);
+        alert(result);
+        
+    }
+
+    return result;
+};
 
 //UI
+
+const updateUI = () => {
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach((cell, index) => {
+        cell.textContent = board.getBoard()[index];
+    });
+};
 
 document.querySelectorAll('.cell').forEach(cell => {
     cell.addEventListener('click', (e) => {
         const index = e.target.getAttribute('data-index');
-        const result = game.playWithAI(index);
+        const result = playWithAI(index);
         e.target.textContent = board.getBoard()[index];
 
         if(result) {
             alert(result);
             board.resetBoard();
             document.querySelectorAll('.cell').forEach(cell => cell.textContent = '');
+        } else {
+            const aiMove = board.getBoard().findIndex(cell => cell === aiPlayer.marker);
+            if(aiMove !== -1) {
+                document.querySelector(`.cell[data-index="${aiMove}"]`).textContent = aiPlayer.marker;
+            }
         }
     })
 })
