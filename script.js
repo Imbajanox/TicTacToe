@@ -27,6 +27,7 @@ const board = (function gameboard () {
 
 function gameController (player1, player2, board) {
     let currentPlayer = player1;
+    let scores = { [player1.name]: 0, [player2.name]: 0};
 
     const switchPlayer = () => {
         currentPlayer = (currentPlayer === player1) ? player2 : player1;
