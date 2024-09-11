@@ -26,6 +26,7 @@ const board = (function gameboard () {
 })(); 
 
 function gameController (player1, player2, board) {
+    let rounds = 0;
     let currentPlayer = player1;
     let scores = { [player1.name]: 0, [player2.name]: 0};
 
@@ -42,8 +43,14 @@ function gameController (player1, player2, board) {
 
             if(checkWin()) {
                 currentPlayer.score += 10;
+                rounds++;
+                setPlayedRounds(rounds);
+                setResult(true, currentPlayer.name);
                 return `${currentPlayer.name} wins!`;
             } else if (board.getBoard().every(cell => cell !== '')) {
+                setResult(false, currentPlayer.name);
+                rounds++;
+                setPlayedRounds(rounds);
                 return "It's a draw!";
             }
             console.log("Played round with" + currentPlayer.name)
@@ -139,6 +146,20 @@ const updateUI = () => {
     });
 };
 
+const setPlayedRounds = (numberOfRounds = 0) => {
+    document.querySelector('.numberOfRounds').textContent = `Rounds played: ${numberOfRounds}`;
+}
+
+const setResult = (winner = true, player) => {
+    if(winner){
+        const result = document.querySelector('.result').textContent = `${player} won!`
+    }
+    else{
+        const result = document.querySelector('.result').textContent = `It's a Draw!`
+    }
+    
+};
+
 document.querySelectorAll('.cell').forEach(cell => {
     cell.addEventListener('click', (e) => {
         const index = e.target.getAttribute('data-index');
@@ -149,6 +170,7 @@ document.querySelectorAll('.cell').forEach(cell => {
             //alert(result);
             board.resetBoard();
             setTimeout(() => {document.querySelectorAll('.cell').forEach(cell => cell.textContent = '');}, 5000);
+            setTimeout(() => {document.querySelector('.result').textContent = 'wait for result...'}, 5000);
             
         } else {
             const aiMove = board.getBoard().findIndex(cell => cell === aiPlayer.marker);
