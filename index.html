@@ -11,6 +11,7 @@
 </head>
 <body>
     <h1>Tic Tac Toe</h1>
+    
     <div id="gameBoard">
         <div class="cell" data-index="0"></div>
         <div class="cell" data-index="1"></div>
@@ -22,9 +23,13 @@
         <div class="cell" data-index="7"></div>
         <div class="cell" data-index="8"></div>
     </div>
-    <p class="numberOfRounds">Rounds played: 0</p>
-    <h2>Result</h2>
-    <p class="result">wait for result...</p>
+    <div class="stats">
+        <button disabled="true" class="newRoundBtn">START NEW GAME</button>
+        <p class="numberOfRounds">Rounds played: 0</p>
+        <h2>Result</h2>
+        <p class="result">wait for result...</p>
+    </div>
+    
 
     <h2>Scoreboard</h2>
     <p class="playerScore">Player: 0 Points</p>

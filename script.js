@@ -160,6 +160,8 @@ const setResult = (winner = true, player) => {
     
 };
 
+
+
 document.querySelectorAll('.cell').forEach(cell => {
     cell.addEventListener('click', (e) => {
         const index = e.target.getAttribute('data-index');
@@ -167,10 +169,16 @@ document.querySelectorAll('.cell').forEach(cell => {
         e.target.textContent = board.getBoard()[index];
 
         if(result) {
-            //alert(result);
-            board.resetBoard();
-            setTimeout(() => {document.querySelectorAll('.cell').forEach(cell => cell.textContent = '');}, 5000);
-            setTimeout(() => {document.querySelector('.result').textContent = 'wait for result...'}, 5000);
+            document.querySelector('.newRoundBtn').disabled = false;
+            document.querySelector('.newRoundBtn').addEventListener('click', () => {
+                board.resetBoard();
+                document.querySelectorAll('.cell').forEach(cell => cell.textContent = '');
+                document.querySelector('.result').textContent = 'wait for result...';
+                document.querySelector('.newRoundBtn').disabled = true;
+            })
+            //board.resetBoard();
+            //setTimeout(() => {document.querySelectorAll('.cell').forEach(cell => cell.textContent = '');}, 5000);
+            //setTimeout(() => {document.querySelector('.result').textContent = 'wait for result...';}, 5000);
             
         } else {
             const aiMove = board.getBoard().findIndex(cell => cell === aiPlayer.marker);
